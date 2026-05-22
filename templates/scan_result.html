@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Tarama Sonucu{% endblock %}
+{% block content %}
+{% set scan = detail.scan %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">Tarama Sonucu #{{ scan.id }}</h1>
+        <p class="text-secondary mb-0">{{ scan.target }} • {{ scan.created_at }}</p>
+    </div>
+    <div class="d-flex gap-2">
+        {% if scan.report_filename %}
+            <a class="btn btn-success" href="{{ url_for('reports', filename=scan.report_filename) }}">Raporu İndir</a>
+        {% endif %}
+        <a class="btn btn-outline-light" href="{{ url_for('dashboard') }}">Yeni Tarama</a>
+    </div>
+</div>
+
+{% if scan.warning %}
+<div class="alert alert-warning">{{ scan.warning }}</div>
+{% endif %}
+{% if scan.baseline_created %}
+<div class="alert alert-info">Bu ilk tarama olduğu için baseline olarak kaydedildi. Sonraki taramalarda yeni cihaz/port anomali olarak işaretlenir.</div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-2 col-6"><div class="stat-card"><span>Host</span><strong>{{ scan.total_hosts }}</strong></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card"><span>Açık Port</span><strong>{{ scan.total_open_ports }}</strong></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card danger"><span>Kritik</span><strong>{{ scan.critical_count }}</strong></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card warning"><span>Yüksek</span><strong>{{ scan.high_count }}</strong></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card"><span>Orta</span><strong>{{ scan.medium_count }}</strong></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card"><span>Düşük/Bilgi</span><strong>{{ scan.low_count + scan.info_count }}</strong></div></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card panel-card">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">Açık Port ve Servis Bulguları</h5>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>Host</th>
+                            <th>Port</th>
+                            <th>Servis</th>
+                            <th>Ürün/Versiyon</th>
+                            <th>Risk</th>
+                            <th>Açıklama</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for finding in detail.findings %}
+                            <tr>
+                                <td>{{ finding.host }}</td>
+                                <td>{{ finding.port }}/{{ finding.protocol }}</td>
+                                <td>{{ finding.service }}</td>
+                                <td>{{ finding.product }} {{ finding.version }}</td>
+                                <td><span class="risk-badge risk-{{ finding.risk|lower }}">{{ finding.risk }}</span></td>
+                                <td class="text-secondary small">{{ finding.risk_reason }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="6" class="text-center text-secondary">Açık port bulunamadı.</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card panel-card">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">Baseline Alarmları</h5>
+                {% if detail.alerts %}
+                    <div class="vstack gap-2">
+                    {% for alert in detail.alerts %}
+                        <div class="alert-box">
+                            <strong>{{ alert.severity }}</strong>
+                            <p>{{ alert.message }}</p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-secondary mb-0">Anomali tespit edilmedi veya ilk baseline oluşturuldu.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

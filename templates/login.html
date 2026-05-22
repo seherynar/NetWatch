@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}NetWatch Login{% endblock %}
+{% block content %}
+<div class="login-wrapper">
+    <div class="card login-card shadow-lg">
+        <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <div class="logo-circle mx-auto mb-3">NW</div>
+                <h1 class="h3 fw-bold">NetWatch</h1>
+                <p class="text-secondary mb-0">Network Anomaly & Risk Detection Dashboard</p>
+            </div>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <input type="text" name="username" class="form-control" placeholder="" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Şifre</label>
+                    <input type="password" name="password" class="form-control" placeholder="" required>
+                </div>
+                <button class="btn btn-primary w-100 py-2" type="submit">Dashboard'a Giriş Yap</button>
+            </form>
+
+            <div class="demo-box mt-4">
+                <strong>Demo giriş:</strong> {{ username }} / {{ password }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

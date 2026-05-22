@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Tarama Geçmişi{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">Tarama Geçmişi</h1>
+        <p class="text-secondary mb-0">SQLite veritabanına kaydedilen NetWatch taramaları.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Dashboard</a>
+</div>
+
+<div class="card panel-card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Hedef</th>
+                    <th>Argüman</th>
+                    <th>Tarih</th>
+                    <th>Host</th>
+                    <th>Port</th>
+                    <th>Kritik</th>
+                    <th>Yüksek</th>
+                    <th>Rapor</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for scan in scans %}
+                    <tr>
+                        <td>#{{ scan.id }}</td>
+                        <td>{{ scan.target }}</td>
+                        <td><code>{{ scan.arguments }}</code></td>
+                        <td>{{ scan.created_at }}</td>
+                        <td>{{ scan.total_hosts }}</td>
+                        <td>{{ scan.total_open_ports }}</td>
+                        <td>{{ scan.critical_count }}</td>
+                        <td>{{ scan.high_count }}</td>
+                        <td>
+                            {% if scan.report_filename %}
+                                <a href="{{ url_for('reports', filename=scan.report_filename) }}">İndir</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td><a class="btn btn-sm btn-primary" href="{{ url_for('scan_detail', scan_id=scan.id) }}">Detay</a></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="10" class="text-center text-secondary">Henüz tarama yok.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

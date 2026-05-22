@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}NetWatch Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-8 col-xl-7">
+        <div class="hero-card p-4 text-center">
+            <p class="badge text-bg-primary mb-3">Yetkili Ağ Taraması</p>
+
+            <h1 class="display-6 fw-bold mb-2">Ağ Tarama ve Değişiklik Takibi</h1>
+
+            <p class="text-secondary mb-4">
+                Hedef IP adresini tara, açık servisleri görüntüle ve önceki taramalara göre yeni açılan portları fark et.
+            </p>
+
+            <form method="post" action="{{ url_for('scan') }}" class="row g-3 justify-content-center align-items-end">
+                <div class="col-md-8">
+                    <label class="form-label text-start w-100">Hedef IP Adresi</label>
+                    <input
+                        name="target"
+                        class="form-control form-control-lg text-center"
+                        placeholder="Örn: 127.0.0.1"
+                        required
+                    >
+                </div>
+
+                <input type="hidden" name="scan_type" value="fast">
+
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-lg w-100" type="submit">
+                        Tara
+                    </button>
+                </div>
+            </form>
+
+            <p class="small text-secondary mt-3 mb-0">
+                Not: Yalnızca izinli sistemlerde tarama yap.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-2">
+    <div class="col-md-2 col-6">
+        <div class="stat-card">
+            <span>Tarama</span>
+            <strong>{{ stats.scan_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-6">
+        <div class="stat-card">
+            <span>Host</span>
+            <strong>{{ stats.total_hosts }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-6">
+        <div class="stat-card">
+            <span>Açık Port</span>
+            <strong>{{ stats.total_open_ports }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-6">
+        <div class="stat-card danger">
+            <span>Kritik</span>
+            <strong>{{ stats.critical_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-6">
+        <div class="stat-card warning">
+            <span>Yüksek</span>
+            <strong>{{ stats.high_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-6">
+        <div class="stat-card">
+            <span>Son Tarama</span>
+            <small>{{ stats.last_scan }}</small>
+        </div>
+    </div>
+</div>
+
+<div class="card panel-card mt-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-bold mb-1">Son Taramalar</h5>
+                <p class="text-secondary small mb-0">
+                    Yapılan son ağ taramalarını ve bulunan açık port sayılarını buradan takip edebilirsin.
+                </p>
+            </div>
+
+            <a href="{{ url_for('history') }}" class="btn btn-outline-light btn-sm">
+                Tümünü Gör
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hedef</th>
+                        <th>Tarih</th>
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>Kritik / Yüksek</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for scan in recent_scans %}
+                        <tr>
+                            <td>#{{ scan.id }}</td>
+                            <td>{{ scan.target }}</td>
+                            <td>{{ scan.created_at }}</td>
+                            <td>{{ scan.total_hosts }}</td>
+                            <td>{{ scan.total_open_ports }}</td>
+                            <td>{{ scan.critical_count }} / {{ scan.high_count }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="{{ url_for('scan_detail', scan_id=scan.id) }}">
+                                    Detay
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-secondary">
+                                Henüz tarama yapılmadı.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

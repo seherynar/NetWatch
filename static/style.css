@@ -1,0 +1,367 @@
+:root {
+    --bg: #020617;
+    --bg-soft: #0f172a;
+    --panel: rgba(15, 23, 42, 0.92);
+    --panel-2: rgba(30, 41, 59, 0.92);
+    --border: rgba(148, 163, 184, 0.16);
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --primary: #38bdf8;
+    --primary-dark: #0284c7;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.10), transparent 28%),
+        linear-gradient(135deg, #020617 0%, #0f172a 55%, #020617 100%);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar {
+    background: rgba(2, 6, 23, 0.92) !important;
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+}
+
+.navbar-brand {
+    color: var(--primary) !important;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.navbar .nav-link {
+    color: var(--muted) !important;
+}
+
+.navbar .nav-link:hover {
+    color: var(--text) !important;
+}
+
+/* GENEL KART TASARIMI */
+
+.card,
+.hero-card,
+.stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    color: var(--text);
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+}
+
+.panel-card {
+    background: var(--panel);
+}
+
+/* DASHBOARD ÜST BÖLÜM */
+
+/* Risk dağılımı grafiğini gizler */
+.row.g-4.align-items-stretch > .col-lg-4 {
+    display: none !important;
+}
+
+/* Hero kartı tüm satıra yayar */
+.row.g-4.align-items-stretch > .col-lg-8 {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+
+/* Arama kutusunu ortalar ve küçültür */
+.hero-card {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 34px !important;
+    text-align: center;
+}
+
+.hero-card .badge {
+    background: rgba(56, 189, 248, 0.16) !important;
+    color: #7dd3fc !important;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    padding: 9px 13px;
+    border-radius: 999px;
+}
+
+.hero-card h1 {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-card p {
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Formu ortalar */
+.hero-card form {
+    justify-content: center;
+    align-items: end;
+    margin-top: 8px;
+}
+
+/* Hedef IP input alanı */
+.hero-card form .col-md-7 {
+    flex: 0 0 520px;
+    max-width: 520px;
+}
+
+/* Tarama tipi alanını gizler */
+.hero-card form .col-md-3,
+.hero-card select[name="scan_type"] {
+    display: none !important;
+}
+
+/* Tara butonu */
+.hero-card form .col-md-2 {
+    flex: 0 0 130px;
+    max-width: 130px;
+}
+
+/* Mobilde form düzgün kalsın */
+@media (max-width: 768px) {
+    .hero-card {
+        max-width: 100%;
+        padding: 24px !important;
+    }
+
+    .hero-card form .col-md-7,
+    .hero-card form .col-md-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* FORM ELEMANLARI */
+
+.form-label {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+    display: block;
+}
+
+.form-control,
+.form-select {
+    background: rgba(2, 6, 23, 0.86);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    color: var(--text);
+    border-radius: 14px;
+}
+
+.form-control::placeholder {
+    color: #64748b;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: rgba(2, 6, 23, 0.95);
+    color: var(--text);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.22rem rgba(56, 189, 248, 0.18);
+}
+
+/* BUTONLAR */
+
+.btn-primary,
+button.btn-primary {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    box-shadow: 0 10px 28px rgba(56, 189, 248, 0.22);
+}
+
+.btn-primary:hover,
+button.btn-primary:hover {
+    background: linear-gradient(135deg, #0369a1, #0ea5e9);
+    transform: translateY(-1px);
+}
+
+.btn-outline-light {
+    border-color: rgba(226, 232, 240, 0.28);
+    color: #e2e8f0;
+    border-radius: 12px;
+}
+
+.btn-outline-light:hover {
+    background: rgba(226, 232, 240, 0.12);
+    border-color: rgba(226, 232, 240, 0.42);
+}
+
+/* İSTATİSTİK KARTLARI */
+
+.stat-card {
+    padding: 20px;
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.18s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56, 189, 248, 0.28);
+}
+
+.stat-card span,
+.stat-card small {
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.stat-card strong {
+    font-size: 2.05rem;
+    line-height: 1;
+    color: var(--primary);
+}
+
+.stat-card.danger strong {
+    color: #f87171;
+}
+
+.stat-card.warning strong {
+    color: #fbbf24;
+}
+
+/* TABLOLAR */
+
+.table-responsive {
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.table-dark {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.025);
+    --bs-table-hover-bg: rgba(56, 189, 248, 0.10);
+    color: var(--text);
+}
+
+.table thead th {
+    color: #7dd3fc;
+    font-weight: 700;
+    background: rgba(2, 6, 23, 0.72);
+    border-bottom: 1px solid var(--border);
+}
+
+.table td,
+.table th {
+    padding: 14px;
+    border-color: rgba(148, 163, 184, 0.10);
+}
+
+.text-secondary {
+    color: var(--muted) !important;
+}
+
+/* RİSK BADGE */
+
+.risk-badge {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.76rem;
+}
+
+.risk-critical {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fca5a5;
+}
+
+.risk-high {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fcd34d;
+}
+
+.risk-medium {
+    background: rgba(56, 189, 248, 0.18);
+    color: #7dd3fc;
+}
+
+.risk-low {
+    background: rgba(34, 197, 94, 0.18);
+    color: #86efac;
+}
+
+.risk-info {
+    background: rgba(148, 163, 184, 0.18);
+    color: #cbd5e1;
+}
+
+/* ALERT / BASELINE ALARMLARI */
+
+.alert-box {
+    border-radius: 16px;
+    padding: 15px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.24);
+}
+
+.alert-box p {
+    margin: 6px 0 0;
+    color: #fecaca;
+    font-size: 0.92rem;
+}
+
+/* LOGIN SAYFASI */
+
+.login-wrapper {
+    min-height: calc(100vh - 120px);
+    display: grid;
+    place-items: center;
+}
+
+.login-card {
+    width: min(430px, 100%);
+    padding: 30px;
+}
+
+.logo-circle {
+    width: 72px;
+    height: 72px;
+    display: grid;
+    place-items: center;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #0284c7, #22c55e);
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: white;
+    box-shadow: 0 14px 34px rgba(56, 189, 248, 0.22);
+}
+
+.demo-box {
+    background: rgba(56, 189, 248, 0.10);
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 14px;
+    padding: 12px;
+    color: #bfdbfe;
+}
+
+/* KOD / KÜÇÜK METİNLER */
+
+code {
+    color: #93c5fd;
+}
+
+.small {
+    color: var(--muted);
+}
