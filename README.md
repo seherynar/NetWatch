@@ -1,75 +1,150 @@
-# NetSentinel - Network Anomaly & Risk Detection Dashboard
+# NetWatch - Ağ Tarama ve Risk Analiz Paneli
 
-NetSentinel is a Python-based network security dashboard that uses Nmap to scan authorized IP addresses or subnets, detect open ports and services, classify risk levels, compare results against a baseline, and generate security reports.
+NetWatch yerel ağdaki cihazları ve açık portları analiz etmek için geliştirilmiş web tabanlı bir güvenlik izleme panelidir.
 
-## Features
+Bu projede amaç yalnızca Nmap çıktısını göstermek değil; açık portları risk seviyelerine göre değerlendirmek, önceki taramalarla karşılaştırmak ve ağ üzerindeki değişiklikleri daha anlaşılır hale getirmektir.
 
-- Login-protected Flask dashboard
-- Authorized IP/subnet scanning with Nmap
-- Open port and service detection
-- Baseline creation on first scan
-- Anomaly detection for new hosts, protocols, and ports
-- Risk classification engine for common exposed services
-- SQLite scan history
-- Downloadable TXT security reports
-- Dashboard cards and risk chart
+## Proje Özeti
 
-## Tech Stack
+Kullanıcı panel üzerinden hedef IP adresi veya subnet bilgisi girerek ağ taraması başlatır. Sistem Nmap ile tarama yapar, bulunan açık portları listeler ve bu portları risk seviyelerine göre analiz eder.
+
+Ayrıca sistem önceki taramalarla karşılaştırma yaparak yeni açılan portları tespit edebilir. Böylece ağda beklenmeyen değişiklikler daha kolay fark edilir.
+
+## Özellikler
+
+- Web tabanlı yönetim paneli
+- Hedef IP veya subnet tarama
+- Nmap ile açık port tespiti
+- Servis bilgisi görüntüleme
+- Port bazlı risk analizi
+- Düşük, orta ve yüksek risk sınıflandırması
+- Önceki taramalarla karşılaştırma
+- Yeni açık port tespiti
+- Alarm kayıtları
+- Tarama geçmişi
+- Basit kullanıcı girişi
+- Türkçe arayüz
+
+## Kullanılan Teknolojiler
 
 - Python
 - Flask
 - SQLite
-- Nmap / python-nmap
-- HTML, CSS, Bootstrap
-- Chart.js
+- Nmap
+- HTML
+- CSS
+- Bootstrap
 
-## Installation
+## Proje Yapısı
 
-Install Nmap first:
+```text
+NetSentinel/
+│
+├── app.py
+├── database.py
+├── scanner_core.py
+├── risk_engine.py
+├── requirements.txt
+├── README.md
+│
+├── data/
+├── reports/
+├── static/
+│   └── style.css
+│
+└── templates/
+    ├── login.html
+    ├── dashboard.html
+    ├── scan_results.html
+    └── alerts.html
+```
 
-- Windows: Install Nmap from the official installer and make sure it is added to PATH.
-- Linux: `sudo apt install nmap`
-- macOS: `brew install nmap`
+## Kurulum
 
-Then run:
+Projeyi çalıştırmak için önce sanal ortam oluşturun:
 
 ```bash
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Linux/macOS
-source venv/bin/activate
+python3 -m venv venv
+```
 
+Sanal ortamı aktif edin:
+
+```bash
+source venv/bin/activate
+```
+
+Gerekli paketleri yükleyin:
+
+```bash
 pip install -r requirements.txt
+```
+
+Projeyi başlatın:
+
+```bash
 python app.py
 ```
 
-Open:
+Tarayıcıdan şu adrese gidin:
 
 ```text
 http://127.0.0.1:5000
 ```
 
-Demo login:
+## Kullanım
+
+Panel açıldıktan sonra kullanıcı giriş yapar ve dashboard ekranına ulaşır.
+
+Dashboard üzerinden hedef IP adresi veya subnet bilgisi girilerek tarama başlatılır.
+
+Örnek hedefler:
 
 ```text
-Username: admin
-Password: admin123
+127.0.0.1
+192.168.1.1
+192.168.1.0/24
 ```
 
-You can change login credentials with environment variables:
+Tarama sonucunda bulunan açık portlar, servis bilgileri ve risk seviyeleri ekranda gösterilir.
 
-```bash
-set NETSENTINEL_USER=youruser
-set NETSENTINEL_PASS=yourpass
+## Risk Analizi Mantığı
+
+Sistem bulunan açık portları belirli kurallara göre değerlendirir.
+
+Örneğin:
+
+- SSH, FTP, Telnet gibi servisler dikkat edilmesi gereken servislerdir.
+- Telnet gibi güvensiz servisler daha yüksek riskli kabul edilir.
+- Bilinen cihazda yeni bir port açılmışsa sistem bunu alarm olarak kaydeder.
+
+Risk seviyeleri genel olarak şu şekilde ayrılır:
+
+- Düşük risk
+- Orta risk
+- Yüksek risk
+
+## Alarm Sistemi
+
+NetSentinel, önceki taramalara göre ağda yeni bir açık port tespit ederse bunu alarm olarak kaydeder.
+
+Örnek alarm:
+
+```text
+Bilinen cihazda yeni açık port tespit edildi: 127.0.0.1:8000/tcp - http
 ```
 
-## Safe Usage
+Bu sayede sistem yalnızca anlık tarama sonucu göstermez, ağdaki değişiklikleri de takip eder.
 
-Use this tool only on networks and systems you own or have explicit permission to test.
+## Veritabanı
 
-## CV Description
+Projede SQLite kullanılmıştır. Tarama sonuçları, cihaz bilgileri ve alarm kayıtları veritabanında saklanır.
 
-**NetSentinel – Network Anomaly & Risk Detection Dashboard**
+Bu yapı sayesinde geçmiş taramalar incelenebilir ve yeni taramalarla karşılaştırma yapılabilir.
 
-Built a Python-based network security dashboard using Nmap, Flask, SQLite, and Bootstrap. The system scans authorized networks, detects open ports and services, creates a baseline of known hosts, identifies new devices or newly exposed ports, classifies risks, stores scan history, and generates downloadable security reports.
+## Geliştirme Notları
+
+Bu proje, ağ güvenliği, açık port analizi ve temel güvenlik izleme süreçlerini daha iyi anlamak için geliştirilmiştir.
+
+Projede Nmap çıktısı doğrudan gösterilmek yerine, sonuçlar yorumlanarak daha okunabilir bir panele dönüştürülmüştür. Böylece hem ağ tarama hem de risk değerlendirme mantığı bir arada uygulanmıştır.
+
+İlerleyen aşamalarda projeye kullanıcı rolleri, gelişmiş raporlama, PDF rapor alma ve daha detaylı zafiyet eşleştirme özellikleri eklenebilir.
