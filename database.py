@@ -1,4 +1,4 @@
-"""SQLite persistence for NetSentinel scan history."""
+"""SQLite persistence for NetWatch scan history."""
 from __future__ import annotations
 
 import sqlite3
@@ -7,7 +7,7 @@ from typing import Any, Dict, List
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
-DB_PATH = DATA_DIR / "netsentinel.db"
+DB_PATH = DATA_DIR / "netwatch.db"
 DATA_DIR.mkdir(exist_ok=True)
 
 

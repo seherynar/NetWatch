@@ -5,7 +5,7 @@ import os
 BASELINE_FILE = 'baseline.json'
 current_scan = {}
 
-print(f"[*] {datetime.now().strftime('%H:%M:%S')} - NetSentinel temiz kurulumla başlatıldı.")
+print(f"[*] {datetime.now().strftime('%H:%M:%S')} - NetWatch temiz kurulumla başlatıldı.")
 nm = nmap.PortScanner()
 target_ip = '127.0.0.1'
 
@@ -69,7 +69,7 @@ try:
                 rapor_adi = f"guvenlik_raporu_{zaman_damgasi}.txt"
 
                 with open(rapor_adi, 'w' , encoding='utf-8') as f:
-                    f.write("[NetSentinel Güvenlik Raporu]\n")
+                    f.write("[NetWatch Güvenlik Raporu]\n")
                     f.write(f"Tarih: {zaman_damgasi}\n")
                     f.write("-" * 50 + "\n")
 
@@ -86,7 +86,7 @@ except nmap.PortScannerError:
     print("[-] Nmap motoru sistemde bulunamadı veya çöktü.")
 except Exception as e:
     print(f"[-] Beklenmedik bir hata meydana geldi: {e}")
-    print("[*] NetSentinel taramayı güvenli bir şekilde sonlandırdı.")
+    print("[*] NetWatch taramayı güvenli bir şekilde sonlandırdı.")
 
 print("\n[*] Adım 1: Çekirdek Tarayıcı Modülü başarıyla tamamlandı!")  
 

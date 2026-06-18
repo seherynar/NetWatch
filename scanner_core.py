@@ -1,4 +1,4 @@
-"""Core scanning, baseline comparison and report generation for NetSentinel."""
+"""Core scanning, baseline comparison and report generation for NetWatch."""
 from __future__ import annotations
 
 import ipaddress
@@ -194,11 +194,11 @@ def summarize(findings: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def create_report(target: str, findings: List[Dict[str, Any]], alerts: List[Dict[str, str]], summary: Dict[str, Any]) -> str:
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"netsentinel_report_{timestamp}.txt"
+    filename = f"netwatch_report_{timestamp}.txt"
     report_path = REPORTS_DIR / filename
 
     with report_path.open("w", encoding="utf-8") as file:
-        file.write("[NetSentinel Güvenlik Raporu]\n")
+        file.write("[NetWatch Güvenlik Raporu]\n")
         file.write(f"Tarih: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         file.write(f"Hedef: {target}\n")
         file.write("-" * 60 + "\n")

@@ -15,8 +15,8 @@ BASE_DIR = Path(__file__).resolve().parent
 app = Flask(__name__)
 app.secret_key = os.environ.get("NETWATCH_SECRET", "change-this-secret-for-demo")
 
-DEMO_USERNAME = os.environ.get("NETSENTINEL_USER", "admin")
-DEMO_PASSWORD = os.environ.get("NETSENTINEL_PASS", "admin123")
+DEMO_USERNAME = os.environ.get("NETWATCH_USER", "admin")
+DEMO_PASSWORD = os.environ.get("NETWATCH_PASS", "admin123")
 
 init_db()
 
