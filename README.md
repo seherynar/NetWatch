@@ -1,51 +1,47 @@
-# NetWatch - Ağ Tarama ve Risk Analiz Paneli
 
-NetWatch yerel ağdaki cihazları ve açık portları analiz etmek için geliştirilmiş web tabanlı bir güvenlik izleme panelidir.
+# NetWatch
 
-Bu projede amaç yalnızca Nmap çıktısını göstermek değil; açık portları risk seviyelerine göre değerlendirmek, önceki taramalarla karşılaştırmak ve ağ üzerindeki değişiklikleri daha anlaşılır hale getirmektir.
+NetWatch, izinli hedefler üzerinde Nmap taramaları yaparak açık portları, servis bilgilerini ve risk seviyelerini web paneli üzerinden gösteren Flask tabanlı bir ağ izleme uygulamasıdır.
 
-## Proje Özeti
+Bu proje; ağ güvenliği, port tarama, risk analizi ve geçmiş taramalarla karşılaştırma mantığını öğrenmek amacıyla geliştirilmiştir.
 
-Kullanıcı panel üzerinden hedef IP adresi veya subnet bilgisi girerek ağ taraması başlatır. Sistem Nmap ile tarama yapar, bulunan açık portları listeler ve bu portları risk seviyelerine göre analiz eder.
+## Projenin Amacı
 
-Ayrıca sistem önceki taramalarla karşılaştırma yaparak yeni açılan portları tespit edebilir. Böylece ağda beklenmeyen değişiklikler daha kolay fark edilir.
+NetWatch’un amacı, küçük ölçekli ağlarda açık portları ve çalışan servisleri daha anlaşılır şekilde takip etmektir. Uygulama, yapılan taramaları kaydeder ve önceki sonuçlarla karşılaştırarak yeni açılan portlar için uyarı oluşturur.
 
-## Özellikler
+## Temel Özellikler
 
-- Web tabanlı yönetim paneli
-- Hedef IP veya subnet tarama
-- Nmap ile açık port tespiti
-- Servis bilgisi görüntüleme
-- Port bazlı risk analizi
-- Düşük, orta ve yüksek risk sınıflandırması
-- Önceki taramalarla karşılaştırma
-- Yeni açık port tespiti
-- Alarm kayıtları
-- Tarama geçmişi
-- Basit kullanıcı girişi
-- Türkçe arayüz
+* IP adresi veya subnet üzerinde Nmap taraması yapma
+* Açık portları ve servisleri listeleme
+* Portlara göre düşük, orta ve yüksek risk analizi yapma
+* Önceki taramalarla karşılaştırma
+* Yeni açık portlar için alarm kaydı oluşturma
+* Tarama geçmişini görüntüleme
+* Basit ve anlaşılır web arayüzü
 
 ## Kullanılan Teknolojiler
 
-- Python
-- Flask
-- SQLite
-- Nmap
-- HTML
-- CSS
-- Bootstrap
+* Python
+* Flask
+* SQLite
+* Nmap
+* HTML
+* CSS
+* Jinja2
 
 ## Proje Yapısı
 
 ```text
-NetSentinel/
+NetWatch/
 │
 ├── app.py
 ├── database.py
 ├── scanner_core.py
 ├── risk_engine.py
+├── original_scanner.py
 ├── requirements.txt
 ├── README.md
+├── .gitignore
 │
 ├── data/
 ├── reports/
@@ -53,39 +49,55 @@ NetSentinel/
 │   └── style.css
 │
 └── templates/
-    ├── login.html
+    ├── base.html
     ├── dashboard.html
-    ├── scan_results.html
+    ├── history.html
+    ├── scan_result.html
     └── alerts.html
 ```
 
-## Kurulum
+## Kurulum ve Çalıştırma
 
-Projeyi çalıştırmak için önce sanal ortam oluşturun:
+Projeyi bilgisayarınıza klonlayın:
 
 ```bash
-python3 -m venv venv
+git clone https://github.com/seherynar/NetWatch.git
+cd NetWatch
+```
+
+Sanal ortam oluşturun:
+
+```bash
+python -m venv venv
 ```
 
 Sanal ortamı aktif edin:
 
 ```bash
-source venv/bin/activate
+venv\Scripts\activate
 ```
 
-Gerekli paketleri yükleyin:
+Gerekli Python paketlerini yükleyin:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Projeyi başlatın:
+Nmap’in bilgisayarınızda kurulu olup olmadığını kontrol edin:
+
+```bash
+nmap --version
+```
+
+Eğer Nmap kurulu değilse, Windows için Nmap kurulumu yapılmalıdır. Kurulumdan sonra terminali yeniden açıp tekrar kontrol edebilirsiniz.
+
+Uygulamayı çalıştırın:
 
 ```bash
 python app.py
 ```
 
-Tarayıcıdan şu adrese gidin:
+Tarayıcıdan açın:
 
 ```text
 http://127.0.0.1:5000
@@ -93,58 +105,28 @@ http://127.0.0.1:5000
 
 ## Kullanım
 
-Panel açıldıktan sonra kullanıcı giriş yapar ve dashboard ekranına ulaşır.
-
-Dashboard üzerinden hedef IP adresi veya subnet bilgisi girilerek tarama başlatılır.
-
-Örnek hedefler:
-
-```text
-127.0.0.1
-192.168.1.1
-192.168.1.0/24
-```
-
-Tarama sonucunda bulunan açık portlar, servis bilgileri ve risk seviyeleri ekranda gösterilir.
+1. Web panelini açın.
+2. Taranacak IP adresini veya subnet bilgisini girin.
+3. Tarama işlemini başlatın.
+4. Açık portları, servisleri ve risk seviyelerini görüntüleyin.
+5. Alarm kayıtları ve tarama geçmişi üzerinden değişiklikleri takip edin.
 
 ## Risk Analizi Mantığı
 
-Sistem bulunan açık portları belirli kurallara göre değerlendirir.
+NetWatch, bulunan portları temel risk seviyelerine ayırır. Örneğin bazı yönetim, uzak bağlantı veya veritabanı servisleri daha yüksek riskli olarak değerlendirilebilir. Bu analiz, temel güvenlik farkındalığı sağlamak için hazırlanmıştır.
 
-Örneğin:
+## Güvenlik Notu
 
-- SSH, FTP, Telnet gibi servisler dikkat edilmesi gereken servislerdir.
-- Telnet gibi güvensiz servisler daha yüksek riskli kabul edilir.
-- Bilinen cihazda yeni bir port açılmışsa sistem bunu alarm olarak kaydeder.
+Bu proje yalnızca eğitim amacıyla ve izinli ağlarda kullanılmalıdır. Size ait olmayan sistemlerde veya izin alınmamış ağlarda tarama yapmak yasal ve etik değildir.
 
-Risk seviyeleri genel olarak şu şekilde ayrılır:
+## Geliştirilebilecek Alanlar
 
-- Düşük risk
-- Orta risk
-- Yüksek risk
+* Kullanıcı giriş sistemi geliştirilebilir.
+* Daha detaylı raporlama eklenebilir.
+* PDF rapor çıktısı oluşturulabilir.
+* Risk analizi daha kapsamlı hale getirilebilir.
+* Zamanlanmış otomatik tarama sistemi eklenebilir.
 
-## Alarm Sistemi
+## Proje Durumu
 
-NetSentinel, önceki taramalara göre ağda yeni bir açık port tespit ederse bunu alarm olarak kaydeder.
-
-Örnek alarm:
-
-```text
-Bilinen cihazda yeni açık port tespit edildi: 127.0.0.1:8000/tcp - http
-```
-
-Bu sayede sistem yalnızca anlık tarama sonucu göstermez, ağdaki değişiklikleri de takip eder.
-
-## Veritabanı
-
-Projede SQLite kullanılmıştır. Tarama sonuçları, cihaz bilgileri ve alarm kayıtları veritabanında saklanır.
-
-Bu yapı sayesinde geçmiş taramalar incelenebilir ve yeni taramalarla karşılaştırma yapılabilir.
-
-## Geliştirme Notları
-
-Bu proje, ağ güvenliği, açık port analizi ve temel güvenlik izleme süreçlerini daha iyi anlamak için geliştirilmiştir.
-
-Projede Nmap çıktısı doğrudan gösterilmek yerine, sonuçlar yorumlanarak daha okunabilir bir panele dönüştürülmüştür. Böylece hem ağ tarama hem de risk değerlendirme mantığı bir arada uygulanmıştır.
-
-İlerleyen aşamalarda projeye kullanıcı rolleri, gelişmiş raporlama, PDF rapor alma ve daha detaylı zafiyet eşleştirme özellikleri eklenebilir.
+Proje temel ağ tarama, risk analizi ve alarm kayıtlarını destekleyen çalışır bir prototip olarak hazırlanmıştır.
